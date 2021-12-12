@@ -31,7 +31,7 @@ namespace BikeShop
             services.AddControllers();
 
             services.AddTransient<UserService>();
-            services.AddTransient<BikeShopService>();
+            services.AddTransient<ShopService>();
             services.AddTransient<BikeService>();
 
         }

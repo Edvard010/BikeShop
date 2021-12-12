@@ -15,6 +15,50 @@ namespace BikeShop.Services
         private readonly BikeShopContext _context;
         private readonly IConfiguration _config;
 
+        public (bool, UserExistsDto) UserExists(UserExistsDto login)
+        {
+            var user = _context.Users.SingleOrDefault(x => x.Login == login.Login);
+            if (user != null)
+            {
+                var userExistsDto = new UserExistsDto
+                {
+                    Login = user.Login
+                };
+                return (true, userExistsDto);
+            }
+            else
+            {
+                return (false, null);
+            }
+        }
+
+        public (bool, LoginDto) Login(LoginDto login)
+        {
+            var hash = GetHash(login.Password);
+
+            var user = _context.Users.SingleOrDefault(x => x.Login == login.Name);
+            if (user != null)
+            {
+                if (user.Password == hash)
+                {
+                    var loginDto = new LoginDto
+                    {
+                        Name = user.Login,
+
+                    };
+                    return (true, loginDto);
+                }
+                else
+                {
+                    return (false, null);
+                }
+            }
+            else
+            {
+                return (false, null);
+            }
+        }
+
         public void Register(RegisterDto register)
         {
             var user = new User
@@ -22,6 +66,9 @@ namespace BikeShop.Services
                 Login = register.Login,
                 Password = GetHash(register.Password)
             };
+
+            _context.Users.Add(user);
+            _context.SaveChanges();
         }
 
         private string GetHash(string password)

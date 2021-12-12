@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BikeShop.Dto
 {
-    public class BikeItemDto
+    public class NewBikeDto
     {
         public long Id { get; set; }
         public string Brand { get; set; }
@@ -13,6 +13,7 @@ namespace BikeShop.Dto
         public string Size { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public long ShopId { get; set; }
+        public long ShopId { get; set; } 
+
     }
 }

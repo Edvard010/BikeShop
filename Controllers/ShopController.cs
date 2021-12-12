@@ -1,4 +1,5 @@
 ﻿using BikeShop.Dto;
+using BikeShop.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,26 +9,42 @@ using System.Threading.Tasks;
 
 namespace BikeShop.Controllers
 {
+
+
     [Route("api/[controller]")]
     [ApiController]
     public class ShopController : ControllerBase
     {
+        private ShopService _shopService;
+        public ShopController(ShopService shopService)
+        {
+            _shopService = shopService;
+        }
+
+
         [HttpGet("{id}")]
         public ShopDetailsDto GetDetails(long id)
         {
-            var details = new ShopDetailsDto 
-            {
-                Id = id,
-                Name = "testowe nejm"
-            };
-            return details;
+            return _shopService.GetDetails(id);            
         }
 
         [HttpPost]
-        public ShopDetailsDto CreateShop([FromBody]ShopDetailsDto shop)
+        public IActionResult CreateShop(NewShopDto shop)
         {
+            if (_shopService.Create(shop) == true)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Shop with this address already exists");
+            }            
+        }
 
-            return shop;
+        [HttpGet]
+        public IEnumerable<ShopItemDto> GetAll()
+        {
+            return _shopService.GetAll();
         }
     }
 }

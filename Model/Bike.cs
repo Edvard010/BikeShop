@@ -12,6 +12,7 @@ namespace BikeShop.Model
         public string Model { get; set; }
         public string Size { get; set; }
         public string Description { get; set; }
+        public decimal Price { get; set; }
         public long ShopId { get; set; }
         public virtual Shop Shop { get; set; }
     }
