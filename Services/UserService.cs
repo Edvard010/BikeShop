@@ -14,7 +14,11 @@ namespace BikeShop.Services
     {
         private readonly BikeShopContext _context;
         private readonly IConfiguration _config;
-
+        public UserService(BikeShopContext bikeShopContext, IConfiguration configuration)
+        {
+            _config = configuration;
+            _context = bikeShopContext;
+        }
         public (bool, UserExistsDto) UserExists(UserExistsDto login)
         {
             var user = _context.Users.SingleOrDefault(x => x.Login == login.Login);
@@ -36,14 +40,14 @@ namespace BikeShop.Services
         {
             var hash = GetHash(login.Password);
 
-            var user = _context.Users.SingleOrDefault(x => x.Login == login.Name);
+            var user = _context.Users.SingleOrDefault(x => x.Login == login.Login);
             if (user != null)
             {
                 if (user.Password == hash)
                 {
                     var loginDto = new LoginDto
                     {
-                        Name = user.Login,
+                        Login = user.Login,
 
                     };
                     return (true, loginDto);

@@ -43,6 +43,27 @@ namespace BikeShop.Services
             return bike; //tu pomyśleć co mam zwracać po dodaniu nowego roweru
         }
 
+        public void EditBike(long id, BikeDetailsDto bikeChanges)
+        {
+            var bike = _context.Bikes.SingleOrDefault(x => x.Id == id);
+            if (bike != null)
+            {
+                
+                bike.Brand = bikeChanges.Brand;
+                bike.Model = bikeChanges.Model;
+                bike.Description = bikeChanges.Description;
+                bike.Price = bikeChanges.Price;
+                bike.Size = bikeChanges.Size;
+            }
+            else
+            {
+                return;
+            }
+            
+            _context.SaveChanges();
+            
+        }
+
         public IEnumerable<BikeItemDto> GetAll()
         {
             return _context.Bikes.Include(x => x.ShopId).ToList().Select(x => new BikeItemDto
@@ -73,6 +94,13 @@ namespace BikeShop.Services
                 Price = bike.Price           
                 //jeszcze id sklepu, w którym jest ten rower, lub -> mając id sklepu - podać adres sklepu?
             };
+        }
+
+        public void DeleteBike(long id)
+        {
+            var bike = _context.Bikes.Find(id);
+            _context.Remove(bike);
+            _context.SaveChanges();
         }
     }
 }
