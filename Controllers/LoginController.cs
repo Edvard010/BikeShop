@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BikeShop.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Admin/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {

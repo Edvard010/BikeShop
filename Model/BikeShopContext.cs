@@ -15,5 +15,6 @@ namespace BikeShop.Model
         public DbSet<User> Users { get; set; }
         public DbSet<Shop> Shops { get; set; }
         public DbSet<Bike> Bikes { get; set; }
+        public DbSet<Client> Clients { get; set; }
     }
 }
