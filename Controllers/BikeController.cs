@@ -32,12 +32,19 @@ namespace BikeShop.Controllers
         }
 
         [HttpPut("{id}")]
-        public void EditBike(long id, [FromBody]BikeDetailsDto bikeChanges)
+        public IActionResult EditBike(long id, [FromBody]BikeDetailsDto bikeChanges)
         {
-            _bikeService.EditBike(id, bikeChanges);
-        }// przerobić później na IActionResult z komunikatami, najpierw ze
-        //sprawdzaniem czy ten bike istnieje - tak dla pewności -> "nie istnieje/zły id"
-
+            if (_bikeService.EditBike(id, bikeChanges) == true)
+            {
+                return Ok("Edited");
+            }
+            else
+            {
+                return BadRequest("Wrong bike's id");
+            }
+            
+        }
+        
         [HttpGet]
         public IEnumerable<BikeItemDto> GetAll()
         {

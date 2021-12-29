@@ -46,5 +46,19 @@ namespace BikeShop.Controllers
         {
             return _shopService.GetAll();
         }
+
+        [HttpPut("{id}")]
+        public IActionResult EditShop(long id, [FromBody] ShopDetailsDto shopChanges)
+        {
+            if (_shopService.EditShop(id, shopChanges) == true)
+            {
+                return Ok("Shop's data Edited");
+            }
+            else
+            {
+                return BadRequest("Wrong shop's id");
+            }
+
+        }
     }
 }

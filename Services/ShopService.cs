@@ -81,5 +81,26 @@ namespace BikeShop.Services
                 Bikes = x.Bikes.Count() //presents how many bikes, but it will be better to present list of bikes(brand,name,size)
             });
         }
+
+        public bool EditShop(long id, ShopDetailsDto shopChanges)
+        {
+            var shop = _context.Shops.SingleOrDefault(x => x.Id == id);
+            if (shop != null)
+            {
+                {
+                    shop.Name = shopChanges.Name;
+                    shop.Address = shopChanges.Address;
+                    shop.Description = shopChanges.Description;
+                    shop.Email = shopChanges.Email;
+                    shop.Phone = shopChanges.Phone;
+                }
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

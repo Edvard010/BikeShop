@@ -43,25 +43,25 @@ namespace BikeShop.Services
             return bike; //tu pomyśleć co mam zwracać po dodaniu nowego roweru
         }
 
-        public void EditBike(long id, BikeDetailsDto bikeChanges)
+        public bool EditBike(long id, BikeDetailsDto bikeChanges)
         {
             var bike = _context.Bikes.SingleOrDefault(x => x.Id == id);
             if (bike != null)
             {
-                
-                bike.Brand = bikeChanges.Brand;
-                bike.Model = bikeChanges.Model;
-                bike.Description = bikeChanges.Description;
-                bike.Price = bikeChanges.Price;
-                bike.Size = bikeChanges.Size;
-            }
+                {
+                    bike.Brand = bikeChanges.Brand;
+                    bike.Model = bikeChanges.Model;
+                    bike.Description = bikeChanges.Description;
+                    bike.Price = bikeChanges.Price;
+                    bike.Size = bikeChanges.Size;
+                }
+                _context.SaveChanges();
+                return true;                
+            }            
             else
             {
-                return;
-            }
-            
-            _context.SaveChanges();
-            
+                return false;
+            }               
         }
 
         public IEnumerable<BikeItemDto> GetAll()
