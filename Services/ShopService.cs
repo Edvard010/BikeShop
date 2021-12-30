@@ -78,7 +78,7 @@ namespace BikeShop.Services
                 Phone = x.Phone,
                 Description = x.Description,
                 Email = x.Email,
-                Bikes = x.Bikes.Count() //presents how many bikes, but it will be better to present list of bikes(brand,name,size)
+                Bikes = x.Bikes.Count() //presents how many bikes, but maybe it will be better to present list of bikes(brand,name,size)
             });
         }
 

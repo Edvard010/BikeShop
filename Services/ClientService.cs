@@ -70,7 +70,7 @@ namespace BikeShop.Services
                 var id2 = bikeItem.Id;
                 var bike = _context.Bikes.SingleOrDefault(x => x.Id == id2);
                 client.Basket.Add(bike);
-                //_context.Bikes.Remove(bike);
+                
             }
             else
             {
@@ -87,7 +87,7 @@ namespace BikeShop.Services
                 var id2 = bikeItem.Id;
                 var bike = _context.Bikes.SingleOrDefault(x => x.Id == id2);
                 client.Basket.Remove(bike);
-                //_context.Bikes.Remove(bike);
+                
             }
             else
             {
