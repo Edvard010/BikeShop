@@ -6,11 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BikeShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+    //[Authorize(Roles = "Administrator")] // only logged User can manage bikes in shops
     public class BikeController : ControllerBase
     {
         private BikeService _bikeService;

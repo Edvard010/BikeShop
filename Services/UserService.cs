@@ -7,6 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Text;
+using System.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BikeShop.Services
 {
@@ -48,7 +52,7 @@ namespace BikeShop.Services
                     var loginDto = new LoginDto
                     {
                         Login = user.Login,
-
+                        Token = Authenticate(user.Login)
                     };
                     return (true, loginDto);
                 }
@@ -86,6 +90,30 @@ namespace BikeShop.Services
             }
 
             return sb.ToString();
+        }
+        
+        public string Authenticate(string login)
+        {
+            if (!_context.Users.Any(u => u.Login == login))
+            {
+                return null;
+            }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_config.GetValue<string>("TokenKey"));
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, login)
+                }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }

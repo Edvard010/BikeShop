@@ -1,5 +1,6 @@
 ﻿using BikeShop.Dto;
 using BikeShop.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,8 @@ namespace BikeShop.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+    //[Authorize(Roles = "Administrator")] // only logged User can manage bikes in shops
     public class ShopController : ControllerBase
     {
         private ShopService _shopService;

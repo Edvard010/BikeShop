@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace BikeShop.Model
 {
     public class Client
-    {
+    {  
         public Client()
         {
             Basket = new Collection<Bike>();

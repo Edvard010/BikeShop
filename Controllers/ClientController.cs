@@ -6,11 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BikeShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
+    //[Authorize(Roles = "User")] // only logged Client can do these actions below
     public class ClientController : ControllerBase
     {
         private ClientService _clientService;
@@ -20,7 +23,7 @@ namespace BikeShop.Controllers
         }
 
         [HttpPost("{id}")]
-        public IActionResult AddToBasket(long id, [FromBody]ItemDto bikeItem)
+        public IActionResult AddToBasket(long id, [FromBody] ItemDto bikeItem)
         {
             _clientService.AddToBasket(id, bikeItem);
             return Ok("Item added to Your Basket");
