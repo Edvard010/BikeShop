@@ -12,8 +12,7 @@ namespace BikeShop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    //[Authorize(Roles = "User")] // only logged Client can do these actions below
+    [Authorize(Roles = "User")] // only logged Client can do these actions below
     public class ClientController : ControllerBase
     {
         private ClientService _clientService;
@@ -23,17 +22,35 @@ namespace BikeShop.Controllers
         }
 
         [HttpPost("{id}")]
-        public IActionResult AddToBasket(long id, [FromBody] ItemDto bikeItem)
+        public IActionResult AddToBasket(long id, [FromBody] ItemDto bikeItem) //cała ta ekwilibrystyka działa, ale czy to jest ok podejście?
         {
-            _clientService.AddToBasket(id, bikeItem);
-            return Ok("Item added to Your Basket");
+            if (_clientService.AddToBasket(id, bikeItem) == (true, "Item added to Your basket"))
+            {
+                return Ok("Item added to Your Basket");
+            }
+            else if (_clientService.AddToBasket(id, bikeItem) == (false, "Wrong bike's id"))
+            {
+                return BadRequest("Wrong bike's id");
+            }
+            else
+            {
+                return BadRequest("Wrong Client's id");
+            }
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteFromBasket(long id, [FromBody] ItemDto bikeItem)
         {
-            _clientService.DeleteFromBasket(id, bikeItem);
-            return Ok("Item deleted from Your Basket");
+            var result = _clientService.DeleteFromBasket(id, bikeItem);
+            if (result.Item1 == true)
+            {
+                return Ok("Item deleted from Your Basket");
+            }
+            else
+            {
+                return BadRequest(result.Item2);
+            }
+            
         }
 
         [HttpGet("{id}")]
