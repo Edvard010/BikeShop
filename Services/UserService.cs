@@ -101,12 +101,15 @@ namespace BikeShop.Services
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_config.GetValue<string>("TokenKey"));
+            
             var tokenDescriptor = new SecurityTokenDescriptor
             {
+
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, login)
-                }),
+                    new Claim(ClaimTypes.Name, login),
+                    new Claim(ClaimTypes.Role, "Admin")
+                }),                
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),

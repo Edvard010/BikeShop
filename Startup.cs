@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace BikeShop
 {
@@ -65,7 +66,11 @@ namespace BikeShop
                         ValidateAudience = false
                     };
                 });
-            
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsAdmin",
+                    policy => policy.RequireRole("Admin", "User"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
