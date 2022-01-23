@@ -59,45 +59,53 @@ namespace BikeShop.Services
             {
                 Login = register.Login,
                 Password = GetHash(register.Password),
-                
+
             };
 
             _context.Clients.Add(client);
             _context.SaveChanges();
         }
 
-        public void AddToBasket(long id, ItemDto bikeItem)
+        public (bool, string) AddToBasket(long id, ItemDto bikeItem)
         {
             var client = _context.Clients.SingleOrDefault(x => x.Id == id);
             if (client != null)
             {
                 var id2 = bikeItem.Id;
-                var bike = _context.Bikes.SingleOrDefault(x => x.Id == id2);
-                client.Basket.Add(bike);
-                
+                var bike = _context.Bikes.SingleOrDefault(x => x.Id == id2); //dodać sprawdzanie czy ClientId == null, czyli jest wolny
+                if (bike != null) //jak sprawdzić czy ClientId = null, jak w Client nie mam property ClientId, to się samo tutaj dodaje
+                {
+                    client.Basket.Add(bike);
+                    _context.SaveChanges();
+                    return (true, "Item added to Your basket");
+                }
+                else
+                {
+                    return (false, "Wrong bike's id");
+                }
             }
             else
             {
-                return;
-            }                        
-            _context.SaveChanges();
+                return (false, "Wrong Client's id");
+            }
         }
 
-        public void DeleteFromBasket(long id, ItemDto bikeItem)
+        public (bool, string) DeleteFromBasket(long id, ItemDto bikeItem) 
         {
             var client = _context.Clients.SingleOrDefault(x => x.Id == id);
-            if (client != null)
+            if (client == null)
             {
-                var id2 = bikeItem.Id;
-                var bike = _context.Bikes.SingleOrDefault(x => x.Id == id2);
-                client.Basket.Remove(bike);
-                
+                return (false, "Wrong Client's id");
             }
-            else
+            var id2 = bikeItem.Id;
+            var bike = client.Basket.SingleOrDefault(x => x.Id == id2);
+            if (bike == null)
             {
-                return;
+                return (false, "Wrong Bike's id");
             }
+            client.Basket.Remove(bike);
             _context.SaveChanges();
+            return (true, "Succesfully deleted from Basket");
         }
 
         public ClientDetailsDto GetDetails(long id)
@@ -151,7 +159,8 @@ namespace BikeShop.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, login)
+                    new Claim(ClaimTypes.Name, login),
+                    new Claim(ClaimTypes.Role, "User")
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(

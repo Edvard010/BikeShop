@@ -13,9 +13,8 @@ namespace BikeShop.Controllers
 
 
     [Route("api/[controller]")]
-    [ApiController]
-    [Authorize]
-    //[Authorize(Roles = "Administrator")] // only logged User can manage bikes in shops
+    [ApiController]    
+    [Authorize(Roles = "Admin")] // only logged User can manage bikes in shops
     public class ShopController : ControllerBase
     {
         private ShopService _shopService;
