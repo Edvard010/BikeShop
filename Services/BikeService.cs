@@ -76,7 +76,7 @@ namespace BikeShop.Services
 
         public BikeDetailsDto GetDetails(long id)
         {
-            var bike = _context.Bikes.Include(x => x.ShopId).SingleOrDefault(x => x.Id == id);
+            var bike = _context.Bikes.Include(x => x.Shop).SingleOrDefault(x => x.Id == id);
 
             if (bike == null)
             {
@@ -88,8 +88,9 @@ namespace BikeShop.Services
                 Brand = bike.Brand,
                 Model = bike.Model,
                 Size = bike.Size,
-                Price = bike.Price           
-                //jeszcze id sklepu, w którym jest ten rower, lub -> mając id sklepu - podać adres sklepu?
+                Price = bike.Price,
+                Description = bike.Description,
+                ShopId = bike.ShopId                
             };
         }
 
