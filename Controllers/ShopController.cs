@@ -15,6 +15,7 @@ namespace BikeShop.Controllers
     [Route("api/[controller]")]
     [ApiController]    
     [Authorize(Roles = "Admin")] // only logged Admin can manage bikes in shops
+
     public class ShopController : ControllerBase
     {
         private ShopService _shopService;
