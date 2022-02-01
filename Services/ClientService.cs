@@ -98,7 +98,7 @@ namespace BikeShop.Services
                 return (false, "Wrong Client's id");
             }
             var id2 = bikeItem.Id;
-            var bike = client.Basket.SingleOrDefault(x => x.Id == id2);
+            var bike = _context.Bikes.SingleOrDefault(x => x.Id == id2);
             if (bike == null)
             {
                 return (false, "Wrong Bike's id");

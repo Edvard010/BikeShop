@@ -30,17 +30,14 @@ namespace BikeShop.Services
                 Price = bike.Price,
                 ShopId = bike.ShopId
             };
-            if (bike.ShopId != 0)
+            var shop = _context.Shops.SingleOrDefault(x => x.Id == bike.ShopId);
+            if (shop == null)
             {
-                var shop = _context.Shops.SingleOrDefault(x => x.Id == bike.ShopId);
-                shop.Bikes.Add(newBike);
+                return null;                
             }
-            else
-            {
-                _context.Bikes.Add(newBike);
-            }
+            shop.Bikes.Add(newBike);
             _context.SaveChanges();
-            return bike; //tu pomyśleć co mam zwracać po dodaniu nowego roweru
+            return bike; 
         }
 
         public bool EditBike(long id, BikeDetailsDto bikeChanges)
