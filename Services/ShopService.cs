@@ -43,7 +43,8 @@ namespace BikeShop.Services
                     Model = p.Model,
                     Size = p.Size,
                     Description = p.Description,
-                    Price = p.Price
+                    Price = p.Price,
+                    ShopId = p.ShopId
                 })
             };
         }
@@ -79,7 +80,16 @@ namespace BikeShop.Services
                 Phone = x.Phone,
                 Description = x.Description,
                 Email = x.Email,
-                Bikes = x.Bikes.Count() //presents how many bikes, but maybe it will be better to present list of bikes(brand,name,size)
+                Bikes = x.Bikes.Select(p => new BikeItemDto
+                {
+                    Id = p.Id,
+                    Brand = p.Brand,
+                    Model = p.Model,
+                    Size = p.Size,
+                    Description = p.Description,
+                    Price = p.Price,
+                    ShopId = p.ShopId
+                })
             });
         }
 
